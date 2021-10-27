@@ -3,19 +3,21 @@
  */
 package components.sink;
 
+import framework.AbstractCommonFilter;
+
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 
-import framework.CommonFilterImpl;
-
-public class SinkFilter extends CommonFilterImpl{
+public class SinkFilter extends AbstractCommonFilter {
     private String sinkFile;
     
     public SinkFilter(String outputFile) {
         this.sinkFile = outputFile;
     }
     @Override
-    public boolean specificComputationForFilter() throws IOException {
+    public boolean specificComputationForFilter(PipedInputStream in, PipedOutputStream out) throws IOException {
         int byte_read;
         FileWriter fw = new FileWriter(this.sinkFile);
         while(true) {

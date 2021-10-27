@@ -3,21 +3,18 @@
  */
 package components.source;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import framework.AbstractCommonFilter;
 
-import framework.CommonFilterImpl;
+import java.io.*;
 
-public class SourceFilter extends CommonFilterImpl{
+public class SourceFilter extends AbstractCommonFilter {
     private String sourceFile;
     
     public SourceFilter(String inputFile){
         this.sourceFile = inputFile;
     }    
     @Override
-    public boolean specificComputationForFilter() throws IOException {
+    public boolean specificComputationForFilter(PipedInputStream in, PipedOutputStream out) throws IOException {
         int byte_read;    
         BufferedInputStream br = new BufferedInputStream(new FileInputStream(new File(sourceFile)));
         while(true) {

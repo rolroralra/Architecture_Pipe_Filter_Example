@@ -1,35 +1,32 @@
-/**
- * Copyright(c) 2021 All rights reserved by Jungho Kim in Myungji University.
- */
 package components.middle;
 
-import framework.AbstractCommonFilter;
+import framework.AbstractMiddleFilter;
 
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 
-public class MiddleFilter extends AbstractCommonFilter {
+public class MiddleFilter2 extends AbstractMiddleFilter {
     @Override
     public boolean specificComputationForFilter(PipedInputStream in, PipedOutputStream out) throws IOException {
-    	int checkBlank = 4; 
+        int checkBlank = 4;
         int numOfBlank = 0;
         int idx = 0;
         byte[] buffer = new byte[64];
-        boolean isCS = false;    
+        boolean isCS = false;
         int byte_read = 0;
-        
-        while(true) {          
-        	// check "CS" on byte_read from student information
+
+        while(true) {
+            // check "CS" on byte_read from student information
             while(byte_read != '\n' && byte_read != -1) {
-            	byte_read = in.read();
+                byte_read = in.read();
                 if(byte_read == ' ') numOfBlank++;
                 if(byte_read != -1) buffer[idx++] = (byte)byte_read;
                 if(numOfBlank == checkBlank && buffer[idx-3] == 'C' && buffer[idx-2] == 'S')
                     isCS = true;
-            }      
+            }
             if(isCS == true) {
-                for(int i = 0; i<idx; i++) 
+                for(int i = 0; i<idx; i++)
                     out.write((char)buffer[i]);
                 isCS = false;
             }

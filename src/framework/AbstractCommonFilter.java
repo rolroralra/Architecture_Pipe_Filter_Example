@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 
-public abstract class CommonFilterImpl implements CommonFilter {
+public abstract class AbstractCommonFilter implements CommonFilter {
 	protected PipedInputStream in = new PipedInputStream();
 	protected PipedOutputStream out = new PipedOutputStream();
 
@@ -25,14 +25,21 @@ public abstract class CommonFilterImpl implements CommonFilter {
 		return out;
 	}
 	
-	abstract public boolean specificComputationForFilter() throws IOException;
+	public boolean specificComputationForFilter() throws IOException {
+		return specificComputationForFilter(in, out);
+	}
+
+	abstract public boolean specificComputationForFilter(PipedInputStream in, PipedOutputStream out) throws IOException;
+
 	// Implementation defined in Runnable interface for thread
 	public void run() {
 		try {
 			specificComputationForFilter();
 		} catch (IOException e) {
-			if (e instanceof EOFException) return;
-			else System.out.println(e);
+			if (e instanceof EOFException) {
+				return;
+			}
+			else e.printStackTrace();
 		} finally {
 			closePorts();
 		}
