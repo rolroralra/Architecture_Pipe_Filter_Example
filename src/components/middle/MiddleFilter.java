@@ -1,6 +1,3 @@
-/**
- * Copyright(c) 2021 All rights reserved by Jungho Kim in Myungji University.
- */
 package components.middle;
 
 import framework.AbstractCommonFilter;
@@ -28,12 +25,15 @@ public class MiddleFilter extends AbstractCommonFilter {
                 if(numOfBlank == checkBlank && buffer[idx-3] == 'C' && buffer[idx-2] == 'S')
                     isCS = true;
             }      
-            if(isCS == true) {
+            if(isCS) {
                 for(int i = 0; i<idx; i++) 
                     out.write((char)buffer[i]);
                 isCS = false;
             }
-            if (byte_read == -1) return true;
+            if (byte_read == -1) {
+                System.out.printf("[%s] %s::Filtering is finished;%n", Thread.currentThread(), this.getClass().getSimpleName());
+                return true;
+            }
             idx = 0;
             numOfBlank = 0;
             byte_read = '\0';

@@ -14,11 +14,13 @@ import java.util.Map;
 
 @Getter
 public abstract class AbstractMiddleFilter extends AbstractCommonFilter {
-    private List<PipedInputStream> inList = new ArrayList<>();
-    private List<PipedOutputStream> outList = new ArrayList<>();
-    private Map<PipedInputStream, PipedOutputStream> map = new HashMap<>();
+//    private List<PipedInputStream> inList = new ArrayList<>();
+//    private List<PipedOutputStream> outList = new ArrayList<>();
+    private Map<PipedInputStream, PipedOutputStream> map = new HashMap<PipedInputStream, PipedOutputStream>(){{
+        put(in, out);
+    }};
 
-    public void connect(CommonFilter prevFilter, CommonFilter nextFilter) throws IOException {
+    public CommonFilter connect(CommonFilter prevFilter, CommonFilter nextFilter) throws IOException {
         PipedInputStream in = new PipedInputStream();
         PipedOutputStream out = new PipedOutputStream();
 
@@ -26,6 +28,8 @@ public abstract class AbstractMiddleFilter extends AbstractCommonFilter {
         out.connect(nextFilter.getPipedInputStream());
 
         map.put(in, out);
+
+        return nextFilter;
     }
 
     @Override
@@ -46,6 +50,21 @@ public abstract class AbstractMiddleFilter extends AbstractCommonFilter {
                 }
             }.run();
         }
+
+//        new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    specificComputationForFilter(in, out);
+//                } catch (IOException e) {
+//                    if (e instanceof EOFException) return;
+//                    else e.printStackTrace();
+//                } finally {
+//                    closePorts(in, out);
+//                }
+//            }
+//        }.run();
+
     }
 
     private void closePorts(PipedInputStream in, PipedOutputStream out) {

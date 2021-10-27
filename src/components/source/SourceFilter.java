@@ -1,6 +1,3 @@
-/**
- * Copyright(c) 2021 All rights reserved by Jungho Kim in Myungji University.
- */
 package components.source;
 
 import framework.AbstractCommonFilter;
@@ -16,10 +13,13 @@ public class SourceFilter extends AbstractCommonFilter {
     @Override
     public boolean specificComputationForFilter(PipedInputStream in, PipedOutputStream out) throws IOException {
         int byte_read;    
-        BufferedInputStream br = new BufferedInputStream(new FileInputStream(new File(sourceFile)));
+        BufferedInputStream br = new BufferedInputStream(new FileInputStream(sourceFile));
         while(true) {
             byte_read = br.read();
-            if (byte_read == -1) return true;
+            if (byte_read == -1) {
+                System.out.printf("[%s] %s::Filtering is finished; Read [%s]%n", Thread.currentThread(), this.getClass().getSimpleName(), sourceFile);
+                return true;
+            }
             out.write(byte_read);
         }
     }

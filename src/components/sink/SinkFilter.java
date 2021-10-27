@@ -1,6 +1,3 @@
-/**
- * Copyright(c) 2021 All rights reserved by Jungho Kim in Myungji University.
- */
 package components.sink;
 
 import framework.AbstractCommonFilter;
@@ -24,7 +21,7 @@ public class SinkFilter extends AbstractCommonFilter {
             byte_read = in.read(); 
             if (byte_read == -1) {
             	 fw.close();
-                 System.out.print( "::Filtering is finished; Output file is created." );  
+                System.out.printf("[%s] %s::Filtering is finished; Output file is created. [%s]%n", Thread.currentThread(), this.getClass().getSimpleName(), sinkFile);
                  return true;
             }
             fw.write((char)byte_read);
